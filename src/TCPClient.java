@@ -1,47 +1,51 @@
+
 import java.io.*;
 import java.net.*;
 
-class TCPClient
-   {
-    public static final String GET_REQUEST = "GET / HTTP/1.1\n\n";
+class TCPClient {
 
-   public static void main(String argv[]) throws Exception
-      {
-      String sentence;  /* sentence typed in by the user       */
-      String modifiedSentence; /* user's sentence after being  */
-                               /* modified by the server       */
+    public static final String GET_REQUEST = "GET / HTTP/1.0\n\n";
 
-      BufferedReader inFromUser =
-         new BufferedReader(
-           new InputStreamReader(System.in));
+    public static void main(String argv[]) throws Exception {
+        String sentence;  /* sentence typed in by the user       */
+        String modifiedSentence; /* user's sentence after being  */
+        /* modified by the server       */
 
-      String hostName = inFromUser.readLine();
-      int port = Integer.parseInt(inFromUser.readLine());
+        BufferedReader inFromUser =
+                new BufferedReader(
+                new InputStreamReader(System.in));
 
-      Socket clientSocket = new Socket(hostName, port);
+        String hostName = inFromUser.readLine();
+        int port = Integer.parseInt(inFromUser.readLine());
 
-      DataOutputStream outToServer =
-         new DataOutputStream(
-           clientSocket.getOutputStream());
-      BufferedReader inFromServer =
-         new BufferedReader(new InputStreamReader(
-           clientSocket.getInputStream()));
+        Socket clientSocket = new Socket(hostName, port);
 
-      /* Send the user's inputted line to the server */
-      outToServer.writeBytes(GET_REQUEST);
+        DataOutputStream outToServer =
+                new DataOutputStream(
+                clientSocket.getOutputStream());
+        BufferedReader inFromServer =
+                new BufferedReader(new InputStreamReader(
+                clientSocket.getInputStream()));
 
-      /* Get the sentence back from the server after being modified */
-      Thread.sleep(1000);
-      String s = "";
-      while(inFromServer.ready()){
-          s += inFromServer.readLine();
-      }
+        /* Send the user's inputted line to the server */
+        outToServer.writeBytes(GET_REQUEST);
 
+        /* Get the sentence back from the server after being modified */
+        Thread.sleep(300);
+        String s = "";
+        while (inFromServer.ready()) {
+            s += inFromServer.readLine() + "\n";
+        }
 
-      /* Output the modified sentence */
-      System.out.println("FROM TCP SERVER: " + s);
+        if (s.contains("200 OK")) {
+            /* Output the modified sentence */
+            System.out.println("FROM TCP SERVER: "
+                    + s.length() + " characters long reply.");
 
-      /* close the TCP socket */
-      clientSocket.close();
-      }
-   }
+        } else {
+            System.out.println("Bad! Got " + s.split("\n")[0]);
+        }
+        /* close the TCP socket */
+        clientSocket.close();
+    }
+}
