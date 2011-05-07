@@ -3,7 +3,7 @@ import java.net.*;
 
 class TCPClient
    {
-    public static final String GET_REQUEST = "GET / HTTP/1.0\n\n";
+    public static final String GET_REQUEST = "GET / HTTP/1.1\n\n";
 
    public static void main(String argv[]) throws Exception
       {
@@ -31,11 +31,14 @@ class TCPClient
       outToServer.writeBytes(GET_REQUEST);
 
       /* Get the sentence back from the server after being modified */
-      modifiedSentence = inFromServer.readLine();
+      String s = "";
+      while(inFromServer.ready()){
+          s += inFromServer.readLine();
+      }
+
 
       /* Output the modified sentence */
-      System.out.println("FROM TCP SERVER: " +
-         modifiedSentence);
+      System.out.println("FROM TCP SERVER: " + s);
 
       /* close the TCP socket */
       clientSocket.close();
