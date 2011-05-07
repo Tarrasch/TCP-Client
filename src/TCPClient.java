@@ -7,10 +7,6 @@ class TCPClient {
     public static final String GET_REQUEST = "GET / HTTP/1.0\n\n";
 
     public static void main(String argv[]) throws Exception {
-        String sentence;  /* sentence typed in by the user       */
-        String modifiedSentence; /* user's sentence after being  */
-        /* modified by the server       */
-
         BufferedReader inFromUser =
                 new BufferedReader(
                 new InputStreamReader(System.in));
