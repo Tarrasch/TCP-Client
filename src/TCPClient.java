@@ -31,6 +31,7 @@ class TCPClient
       outToServer.writeBytes(GET_REQUEST);
 
       /* Get the sentence back from the server after being modified */
+      Thread.sleep(1000);
       String s = "";
       while(inFromServer.ready()){
           s += inFromServer.readLine();
